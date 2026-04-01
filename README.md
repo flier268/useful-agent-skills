@@ -7,7 +7,7 @@
 ### 1) 下載專案
 
 ```bash
-git clone <你的-repo-url> useful-agents-prompts
+git clone https://github.com/flier268/useful-agent-skills
 ```
 
 ### 2) 進入專案目錄
