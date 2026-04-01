@@ -1,0 +1,4 @@
+interface:
+  display_name: "Commit Staged"
+  short_description: "Write a Traditional Chinese commit for staged changes"
+  default_prompt: "Use $commit-staged to inspect the staged diff, write a Traditional Chinese commit message, and create the commit."

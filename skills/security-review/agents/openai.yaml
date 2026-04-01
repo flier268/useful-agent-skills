@@ -1,0 +1,4 @@
+interface:
+  display_name: "Security Review"
+  short_description: "Review code with structured security findings"
+  default_prompt: "Use $security-review to audit this change and record findings in the security docs workflow."

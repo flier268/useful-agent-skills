@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fix Issues"
+  short_description: "Find root causes, patch issues, and check regressions"
+  default_prompt: "Use $fix-issues to trace these problems to root causes, fix them, and check for similar issues."
