@@ -1,6 +1,6 @@
 ---
 name: fix-issues
-description: Investigate reported bugs or failures by tracing root causes, searching for similar issues, proposing the fix, implementing it, and checking for regressions. Use when Codex is asked to diagnose problems, fix broken behavior, or ensure a patch does not introduce new issues.
+description: Investigate reported bugs or failures by tracing root causes, searching for similar issues, proposing the fix, implementing it, and checking for regressions. Use when the agent is asked to diagnose problems, fix broken behavior, or ensure a patch does not introduce new issues.
 ---
 
 # Fix Issues

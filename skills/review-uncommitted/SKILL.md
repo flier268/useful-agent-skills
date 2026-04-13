@@ -1,6 +1,6 @@
 ---
 name: review-uncommitted
-description: Review staged, unstaged, and untracked repository changes without restarting from zero each time. Use when Codex is asked to review uncommitted work, continue a previous review pass, or track multiple pending findings across several fix-and-review cycles by storing a resumable cache session under the temp directory returned by the session script.
+description: Review staged, unstaged, and untracked repository changes without restarting from zero each time. Use when the agent is asked to review uncommitted work, continue a previous review pass, or track multiple pending findings across several fix-and-review cycles by storing a resumable cache session under the temp directory returned by the session script.
 ---
 
 # Review Uncommitted

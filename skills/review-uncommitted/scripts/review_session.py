@@ -13,7 +13,7 @@ import tempfile
 from pathlib import Path
 
 
-SESSION_PREFIX = 'codex-review-uncommitted-'
+SESSION_PREFIX = 'agent-review-uncommitted-'
 DEFAULT_ROOT = Path(tempfile.gettempdir())
 
 INDEX_TEMPLATE = """# Review Session Index

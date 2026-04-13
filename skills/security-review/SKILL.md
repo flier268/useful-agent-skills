@@ -1,6 +1,6 @@
 ---
 name: security-review
-description: Review code, diffs, or features for security risks and maintain structured security review documents. Use when Codex is asked to do a security review, continue an existing finding, update `docs/security-review.md`, or write detailed findings under `docs/security-review/` without expanding every security document by default.
+description: Review code, diffs, or features for security risks and maintain structured security review documents. Use when the agent is asked to do a security review, continue an existing finding, update `docs/security-review.md`, or write detailed findings under `docs/security-review/` without expanding every security document by default.
 ---
 
 # Security Review

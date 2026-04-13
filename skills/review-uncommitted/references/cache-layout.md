@@ -1,6 +1,6 @@
 # Cache Layout
 
-The review session cache lives in a random folder under the temp directory chosen by `scripts/review_session.py`, with a name like `codex-review-uncommitted-abc123`.
+The review session cache lives in a random folder under the temp directory chosen by `scripts/review_session.py`, with a name like `agent-review-uncommitted-abc123`.
 
 ## Files
 

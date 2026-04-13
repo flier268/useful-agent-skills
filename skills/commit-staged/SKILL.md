@@ -1,6 +1,6 @@
 ---
 name: commit-staged
-description: Inspect the staged git diff, write an appropriate commit message in Traditional Chinese that follows the current repository's AGENTS.md rules, and create the commit. Use when Codex is asked to commit the currently staged changes and the message must be derived from the staged content rather than the full worktree.
+description: Inspect the staged git diff, write an appropriate commit message in Traditional Chinese that follows the current repository's AGENTS.md rules, and create the commit. Use when the agent is asked to commit the currently staged changes and the message must be derived from the staged content rather than the full worktree.
 ---
 
 # Commit Staged
