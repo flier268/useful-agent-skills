@@ -18,23 +18,50 @@ cd useful-agents-skills
 
 ### 3) 安裝到 Codex（可選）
 
+Linux / macOS:
+
 ```bash
 mkdir -p ~/.codex/skills
 cp -R skills/* ~/.codex/skills/
 ```
 
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.codex\skills" | Out-Null
+Copy-Item -Recurse -Force .\skills\* "$HOME\.codex\skills\"
+```
+
 ### 4) 安裝到 Claude（可選）
+
+Linux / macOS:
 
 ```bash
 mkdir -p ~/.claude/skills
 cp -R skills/* ~/.claude/skills/
 ```
 
+Windows PowerShell:
+
+```powershell
+New-Item -ItemType Directory -Force "$HOME\.claude\skills" | Out-Null
+Copy-Item -Recurse -Force .\skills\* "$HOME\.claude\skills\"
+```
+
 ### 5) 確認安裝結果
+
+Linux / macOS:
 
 ```bash
 ls -la ~/.codex/skills
 ls -la ~/.claude/skills
+```
+
+Windows PowerShell:
+
+```powershell
+Get-ChildItem "$HOME\.codex\skills"
+Get-ChildItem "$HOME\.claude\skills"
 ```
 
 你應該會看到：
@@ -44,11 +71,20 @@ ls -la ~/.claude/skills
 
 ### 更新已安裝技能
 
-當此 repo 有更新時，在專案目錄重新執行：
+當此 repo 有更新時，在專案目錄重新執行。
+
+Linux / macOS:
 
 ```bash
 cp -R skills/* ~/.codex/skills/
 cp -R skills/* ~/.claude/skills/
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item -Recurse -Force .\skills\* "$HOME\.codex\skills\"
+Copy-Item -Recurse -Force .\skills\* "$HOME\.claude\skills\"
 ```
 
 ## 目前包含的 Skills
@@ -67,6 +103,8 @@ cp -R skills/* ~/.claude/skills/
 - Codex 使用 `skills/<name>/SKILL.md` 與 `skills/<name>/agents/openai.yaml`
 - Claude 使用 `skills/<name>/SKILL.md`
 - 兩者共用同一份 skill 內容，只是安裝位置不同
+- Linux / macOS 預設路徑通常是 `~/.codex/skills` 與 `~/.claude/skills`
+- Windows 預設路徑通常是 `$HOME\.codex\skills` 與 `$HOME\.claude\skills`
 
 ## 使用方式
 
