@@ -1,26 +1,30 @@
 ---
 name: review-uncommitted
-description: Review staged, unstaged, and untracked repository changes without restarting from zero each time. Use when the agent is asked to review uncommitted work, continue a previous review pass, or track multiple pending findings across several fix-and-review cycles by storing a resumable cache session under the temp directory returned by the session script.
+description: Review staged, unstaged, and untracked repository changes with a resumable cache session. Use when the user asks to review uncommitted work, continue a prior review pass, or track findings across fix-and-review cycles.
 ---
 
 # Review Uncommitted
 
-Review uncommitted changes with a resumable cache session so later passes can continue from prior findings instead of rereading the whole worktree.
+Review uncommitted changes without restarting from zero.
+
+## Script Path
+
+Resolve helper scripts relative to this skill directory, not the repository being reviewed.
+
+- Current script: `/home/kumei/.codex/skills/review-uncommitted/scripts/review_session.py`
+- Portable form: `<this-skill-dir>/scripts/review_session.py`
 
 ## Session Workflow
 
 1. If the user does not provide a session name, create one with:
-   `python3 scripts/review_session.py init --repo <repo-path>`
+   `python3 /home/kumei/.codex/skills/review-uncommitted/scripts/review_session.py init --repo <repo-path>`
 2. Tell the user the returned `SESSION_NAME` and `SESSION_PATH`.
-3. Treat the session folder as the review cache for later passes.
-4. If the user provides an existing session name, resolve it with:
-   `python3 scripts/review_session.py resolve <session-name>`
-5. Before resuming an older session, check for worktree drift with:
-   `python3 scripts/review_session.py status <session-name>`
+3. If the user provides an existing session name, resolve it with:
+   `python3 /home/kumei/.codex/skills/review-uncommitted/scripts/review_session.py resolve <session-name>`
+4. Before resuming an older session, check for worktree drift with:
+   `python3 /home/kumei/.codex/skills/review-uncommitted/scripts/review_session.py status <session-name>`
 
 ## Reading Order
-
-Read the minimum possible cache content.
 
 1. Read `<session>/index.md` first.
 2. Open only the file named in `Next file to open`.
@@ -33,12 +37,10 @@ For the cache file layout, read `references/cache-layout.md`.
 ## Review Rules
 
 - Review both staged and unstaged tracked changes plus untracked files unless the user narrows the scope.
-- Record what was checked in `checked-paths.md` with short conclusions.
-- Keep `index.md` short and current so it can bootstrap the next pass quickly.
-- Put active findings in `findings-open.md`.
-- Move closed or disproven findings to `findings-closed.md`.
-- Keep `next-steps.md` focused on the highest-value unresolved review targets.
-- When a finding points to repeated bad patterns, note the related locations in `checked-paths.md` or `findings-open.md` instead of rediscovering them later.
+- Record checked areas and short conclusions in `checked-paths.md`.
+- Keep `index.md` short and current.
+- Put active findings in `findings-open.md`; move resolved or disproven findings to `findings-closed.md`.
+- Keep `next-steps.md` focused on the highest-value remaining targets.
 
 ## Index Requirements
 
@@ -55,14 +57,10 @@ Do not turn `index.md` into a full log.
 ## Continuation Rules
 
 - Reuse the existing session whenever the user wants another review pass on the same ongoing work.
-- If the worktree changed significantly, update the cache files instead of creating duplicate sessions unless the user explicitly wants a fresh review.
-- If a new, unrelated feature branch or worktree appears, start a new session.
+- If the worktree changed, update the cache instead of creating a duplicate session unless a fresh review is needed.
+- If the repo, branch, or task is unrelated to the session, start a new session.
 - If the cache no longer matches the repo state closely enough to be trustworthy, tell the user and start a new session.
 
 ## Output
 
-After each review pass:
-
-- report findings first
-- report residual risk or unverified areas
-- give the session name back to the user for the next pass
+Report findings first, then residual risk or unverified areas, then the session name for the next pass.

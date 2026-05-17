@@ -1,6 +1,12 @@
 # Cache Layout
 
-The review session cache lives in a random folder under the temp directory chosen by `scripts/review_session.py`, with a name like `agent-review-uncommitted-abc123`.
+The review session cache lives in a random folder under the temp directory chosen by the skill helper script, with a name like `agent-review-uncommitted-abc123`.
+
+Run the helper script from its skill path, not from the reviewed repository:
+
+```sh
+python3 /home/kumei/.codex/skills/review-uncommitted/scripts/review_session.py <command>
+```
 
 ## Files
 
@@ -19,6 +25,6 @@ The review session cache lives in a random folder under the temp directory chose
 2. Open the one file named in `Next file to open`.
 3. Read `checked-paths.md` only when you need to avoid re-reviewing the same area.
 4. Read `findings-open.md` when continuing an existing issue.
-5. Run `scripts/review_session.py status <session>` if the worktree may have changed since the cache was created.
+5. Run `python3 /home/kumei/.codex/skills/review-uncommitted/scripts/review_session.py status <session>` if the worktree may have changed since the cache was created.
 
 Do not load every cache file by default.
