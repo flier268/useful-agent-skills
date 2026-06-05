@@ -55,6 +55,8 @@ If branch review does not name a base branch:
 7. Read only the next target through:
    `python3 <this-skill-dir>/scripts/review_session.py next <session-name>`
 8. Record the review scope in the session index.
+9. Update session files through helper commands:
+   `list`, `update-index`, `add-finding`, `close-finding`, `add-checked`, `add-next`, `clear-next`, `append`, `replace`, `clear-open-findings`, `refresh-snapshot`, and `sync-index`.
 
 ## Read In Order
 
@@ -73,6 +75,21 @@ If branch review does not name a base branch:
 - Put active findings in `findings-open.md`; move resolved or disproven findings to `findings-closed.md`.
 - Keep `next-steps.md` focused on the highest-value remaining targets.
 - Keep `<session>/index.md` limited to review scope, current focus, next file to open, last meaningful change, current worktree snapshot counts, and a short review summary.
+- Use helper commands, not direct file edits, for review session updates.
+  - `update-index` changes known fields in `index.md`, including scope, focus, next target, summary counts, and status.
+  - `add-finding` adds an open finding.
+  - `close-finding` moves one open finding to closed findings and records resolution or verification.
+  - `add-checked` records a checked path or symbol.
+  - `add-next` and `clear-next` maintain next steps.
+  - `append` and `replace` cover exceptional file updates.
+  - `clear-open-findings` resets `findings-open.md` after all findings are closed.
+  - `refresh-snapshot` refreshes worktree status, file lists, and snapshot counts.
+  - `sync-index` recounts open findings, closed findings, and checked paths.
+- Before editing any session file, read that exact file or use `show`.
+- Preserve the current headings and usage text in session files.
+- Do not write patches to session files unless a needed update has no helper command.
+- If a patch context does not match, re-read the file and retry silently.
+- Do not mention patch-context mismatch to the user unless the session file is missing or corrupted.
 
 For security review:
 
