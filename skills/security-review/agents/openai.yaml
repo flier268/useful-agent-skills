@@ -1,4 +1,0 @@
-interface:
-  display_name: "Security Review"
-  short_description: "Find concrete security risks and maintain concise review docs"
-  default_prompt: "Use $security-review to review this change for concrete security findings and update the concise security review docs only where needed."

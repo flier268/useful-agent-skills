@@ -7,13 +7,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 import tempfile
 from pathlib import Path
 
 
-SESSION_PREFIX = 'agent-review-uncommitted-'
+SESSION_PREFIX = 'agent-review-with-session-'
 DEFAULT_ROOT = Path(tempfile.gettempdir())
 
 INDEX_TEMPLATE = """# Review Session Index
@@ -122,6 +123,22 @@ def resolve_session(session: str) -> Path:
     raise FileNotFoundError(f'session not found: {session}')
 
 
+def parse_index_fields(index_text: str) -> dict[str, str]:
+    patterns = {
+        'current_focus': r'- Current focus:\s*(.+)',
+        'next_file_to_open': r'- Next file to open:\s*(.+)',
+        'last_meaningful_change': r'- Last meaningful change:\s*(.+)',
+        'staged_files': r'- Staged files:\s*(.+)',
+        'unstaged_files': r'- Unstaged files:\s*(.+)',
+        'untracked_files': r'- Untracked files:\s*(.+)',
+    }
+    result: dict[str, str] = {}
+    for key, pattern in patterns.items():
+        match = re.search(pattern, index_text)
+        result[key] = match.group(1).strip() if match else ''
+    return result
+
+
 def command_init(repo: Path) -> int:
     repo = repo.resolve()
     snapshot = collect_snapshot(repo)
@@ -219,6 +236,50 @@ def command_status(session: str) -> int:
     return 0
 
 
+def command_show(session: str, name: str) -> int:
+    session_dir = resolve_session(session)
+    allowed = {
+        'index': 'index.md',
+        'findings-open': 'findings-open.md',
+        'findings-closed': 'findings-closed.md',
+        'checked-paths': 'checked-paths.md',
+        'next-steps': 'next-steps.md',
+        'worktree-status': 'worktree-status.txt',
+        'worktree-files': 'worktree-files.json',
+        'session': 'session.json',
+    }
+    if name not in allowed:
+        choices = ', '.join(sorted(allowed))
+        raise ValueError(f'unknown session file key: {name}. use one of: {choices}')
+    path = session_dir / allowed[name]
+    print(path.read_text(encoding='utf-8'), end='')
+    return 0
+
+
+def command_summary(session: str) -> int:
+    session_dir = resolve_session(session)
+    meta = json.loads((session_dir / 'session.json').read_text(encoding='utf-8'))
+    index_fields = parse_index_fields((session_dir / 'index.md').read_text(encoding='utf-8'))
+    print(f'SESSION_NAME={session_dir.name}')
+    print(f'SESSION_PATH={session_dir}')
+    print(f'REPO={meta["repo_path"]}')
+    print(f'HEAD={meta["head"]}')
+    print(f'CURRENT_FOCUS={index_fields["current_focus"]}')
+    print(f'NEXT_FILE_TO_OPEN={index_fields["next_file_to_open"]}')
+    print(f'LAST_MEANINGFUL_CHANGE={index_fields["last_meaningful_change"]}')
+    print(f'STAGED_FILES={index_fields["staged_files"]}')
+    print(f'UNSTAGED_FILES={index_fields["unstaged_files"]}')
+    print(f'UNTRACKED_FILES={index_fields["untracked_files"]}')
+    return 0
+
+
+def command_next(session: str) -> int:
+    session_dir = resolve_session(session)
+    index_fields = parse_index_fields((session_dir / 'index.md').read_text(encoding='utf-8'))
+    print(index_fields['next_file_to_open'])
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest='command', required=True)
@@ -232,6 +293,16 @@ def main() -> int:
     status_parser = subparsers.add_parser('status')
     status_parser.add_argument('session', help='Session name or path')
 
+    show_parser = subparsers.add_parser('show')
+    show_parser.add_argument('session', help='Session name or path')
+    show_parser.add_argument('name', help='Session file key')
+
+    summary_parser = subparsers.add_parser('summary')
+    summary_parser.add_argument('session', help='Session name or path')
+
+    next_parser = subparsers.add_parser('next')
+    next_parser.add_argument('session', help='Session name or path')
+
     args = parser.parse_args()
 
     try:
@@ -241,6 +312,12 @@ def main() -> int:
             return command_resolve(args.session)
         if args.command == 'status':
             return command_status(args.session)
+        if args.command == 'show':
+            return command_show(args.session, args.name)
+        if args.command == 'summary':
+            return command_summary(args.session)
+        if args.command == 'next':
+            return command_next(args.session)
     except Exception as exc:
         print(f'ERROR: {exc}', file=sys.stderr)
         return 1

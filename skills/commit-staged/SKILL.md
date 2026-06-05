@@ -1,6 +1,6 @@
 ---
 name: commit-staged
-description: Commit only the staged git changes with a Traditional Chinese message that follows the repository's AGENTS.md rules. Use when the user asks to commit staged work and the message must come from the staged diff, not the full worktree.
+description: Commit only staged changes with a Traditional Chinese message from the staged diff.
 ---
 
 # Commit Staged

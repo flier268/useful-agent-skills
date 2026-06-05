@@ -1,4 +1,0 @@
-interface:
-  display_name: "Review Uncommitted"
-  short_description: "Review uncommitted work with resumable cache sessions"
-  default_prompt: "Use $review-uncommitted to review current uncommitted changes, manage the resumable cache session with the skill's review_session.py script, and continue from that session in later passes."

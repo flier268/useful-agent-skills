@@ -1,6 +1,6 @@
 ---
 name: fix-issues
-description: Diagnose reported bugs or failures, reproduce or trace the root cause, fix it with focused regression coverage, and verify related paths. Use when the agent is asked to fix broken behavior, investigate failures, or guard against recurring issues.
+description: Find broken behavior, fix the cause, add focused tests, and verify results.
 ---
 
 # Fix Issues
