@@ -21,6 +21,12 @@ Run `python3 <this-skill-dir>/scripts/review_session.py <command>` from this ski
 Read `references/cache-layout.md` for cache files.
 Read `references/security-review-format.md` for security review files.
 
+Readable file keys for `show` are:
+`index`, `findings-open`, `findings-closed`, `checked-paths`, `next-steps`, `worktree-status`, `worktree-files`, and `session`.
+
+Writable file keys for `append` and `replace` are:
+`findings-open`, `findings-closed`, `checked-paths`, and `next-steps`.
+
 ## Pick Scope
 
 - No scope named: review staged, unstaged, and untracked changes.
@@ -42,7 +48,7 @@ If branch review does not name a base branch:
 ## Session
 
 1. If the user does not provide a session name, create one with:
-   `python3 <this-skill-dir>/scripts/review_session.py init --repo <repo-path>`
+   `python3 <this-skill-dir>/scripts/review_session.py init --repo <repo-path> --scope "<scope>"`
 2. Tell the user the returned `SESSION_NAME` and `SESSION_PATH`.
 3. If the user provides an existing session name, resolve it with:
    `python3 <this-skill-dir>/scripts/review_session.py resolve <session-name>`
@@ -54,7 +60,8 @@ If branch review does not name a base branch:
    `python3 <this-skill-dir>/scripts/review_session.py show <session-name> <file-key>`
 7. Read only the next target through:
    `python3 <this-skill-dir>/scripts/review_session.py next <session-name>`
-8. Record the review scope in the session index.
+8. If the session was created without the right scope, update it with:
+   `python3 <this-skill-dir>/scripts/review_session.py update-index <session-name> --scope "<scope>"`
 9. Update session files through helper commands:
    `list`, `update-index`, `add-finding`, `close-finding`, `add-checked`, `add-next`, `clear-next`, `append`, `replace`, `clear-open-findings`, `refresh-snapshot`, and `sync-index`.
 
@@ -85,6 +92,12 @@ If branch review does not name a base branch:
   - `clear-open-findings` resets `findings-open.md` after all findings are closed.
   - `refresh-snapshot` refreshes worktree status, file lists, and snapshot counts.
   - `sync-index` recounts open findings, closed findings, and checked paths.
+  - `append` uses `--text` or `--text-file`.
+  - `replace` uses `--text` or `--text-file`.
+  - `add-finding` uses `--title` and `--body` or `--body-file`.
+  - `close-finding` uses `--title`, with optional `--resolution`, `--verification`, and `--keep-open`.
+  - `add-checked` uses `--path` and `--conclusion`.
+  - `add-next` uses `--step`.
 - Before editing any session file, read that exact file or use `show`.
 - Preserve the current headings and usage text in session files.
 - Do not write patches to session files unless a needed update has no helper command.
