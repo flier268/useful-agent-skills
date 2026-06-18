@@ -1,6 +1,6 @@
 ---
 name: review-with-session
-description: Review code with a resumable session for uncommitted, staged, branch, whole-project, or security review.
+description: Resumable code review for uncommitted, staged, branch, project, or security scopes; finds bugs, regressions, minimal-fix debt, and dead code.
 ---
 
 # Review With Session
@@ -74,6 +74,17 @@ If branch review does not name a base branch:
 5. Read `findings-open.md` through `show` only when continuing an existing issue.
 6. Run `status` only when the worktree may have changed since the cache was created.
 7. Read the current diff or source files for the chosen scope only.
+
+## Review Rubric
+
+- Prioritize potential bugs, behavioral regressions, broken edge cases, and missing tests.
+- Check whether a minimal change leaves nearby code inconsistent, duplicated, obsolete, or harder to maintain.
+- Flag technical debt only when it was introduced or made materially worse by the reviewed scope.
+- Look for dead code, unused helpers, stale branches, obsolete feature paths, unreachable conditions, and unused imports.
+- Verify whether deleted or replaced behavior still has callers, tests, docs, config, generated files, or migration paths that need updates.
+- Treat cleanup findings as lower priority than correctness, security, data loss, and user-visible regressions.
+- Do not ask for broad refactors unless they are needed to prevent a concrete issue in the reviewed scope.
+- Distinguish required fixes from optional cleanup in the finding body.
 
 ## Keep Updated
 

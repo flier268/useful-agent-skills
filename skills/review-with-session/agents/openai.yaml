@@ -1,4 +1,4 @@
 interface:
   display_name: "Review With Session"
-  short_description: "Review code with a resumable session. Default to uncommitted changes."
-  default_prompt: "Use $review-with-session for resumable code review. Default to current uncommitted changes. Also use it for staged-only, branch, or whole-project review. Read session files through the helper CLI. For security review, keep the chosen scope and use the same session file names."
+  short_description: "Review code with a resumable session for bugs, debt, and dead code."
+  default_prompt: "Use $review-with-session for resumable code review. Default to current uncommitted changes. Also use it for staged-only, branch, whole-project, and security review. Prioritize potential bugs, regressions, incomplete minimal fixes, technical debt introduced by the reviewed scope, and dead code. Read session files through the helper CLI."
