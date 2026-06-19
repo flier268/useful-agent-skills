@@ -85,6 +85,9 @@ If branch review does not name a base branch:
 - Treat cleanup findings as lower priority than correctness, security, data loss, and user-visible regressions.
 - Do not ask for broad refactors unless they are needed to prevent a concrete issue in the reviewed scope.
 - Distinguish required fixes from optional cleanup in the finding body.
+- Do not stop after a small sample of findings. Keep reviewing until the selected scope is covered, or until a real blocker prevents further progress.
+- Do not impose a fixed cap on reported findings. Record and report every actionable issue found in the reviewed scope.
+- If many findings exist, group or order them by severity and area, but do not omit lower-priority actionable findings merely to keep the report short.
 
 ## Keep Updated
 
@@ -143,5 +146,8 @@ For security review:
 ## Output
 
 - Report findings first.
+- Do not limit the number of findings in the final report. Include all open findings discovered during this pass.
+- Prefer one complete report over multiple partial reports. Only defer remaining review work when the scope is too large for the current run, a blocker appears, or the user asks to pause.
 - Then report residual risk or unverified areas.
+- Explicitly state whether the selected scope was fully reviewed in this pass. If it was not, name the remaining areas.
 - Then report the session name for the next pass.
