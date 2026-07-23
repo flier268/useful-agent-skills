@@ -1,41 +1,35 @@
-# Cache Layout
+# Session Storage
 
-The review session cache lives in a random folder under the temp directory chosen by the skill helper script, with a name like `agent-review-with-session-abc123`.
+Session state is stored outside the reviewed repository.
 
-Run the helper script from its skill path, not from the reviewed repository:
+- Linux: `$XDG_STATE_HOME/review-with-session`
+- Linux fallback: `~/.local/state/review-with-session`
+- macOS: `~/Library/Application Support/review-with-session`
+- Windows: `%LOCALAPPDATA%\review-with-session`
+- Override: `REVIEW_WITH_SESSION_ROOT`
 
-```sh
-python3 <this-skill-dir>/scripts/review_session.py <command>
-```
+The helper also searches the system temporary directory for legacy sessions.
+Unix session directories use mode `0700`.
+An existing custom root must already be private to the current user.
+The helper never changes permissions on an existing root.
+The session root cannot be inside the reviewed repository.
 
 ## Files
 
-- `index.md`: minimal resume file; read this first on every continuation
-- `findings-open.md`: active findings still under review
-- `findings-closed.md`: findings closed as fixed, disproven, or accepted
-- `checked-paths.md`: files, symbols, or areas already reviewed with concise conclusions
-- `next-steps.md`: queued follow-up targets for the next pass
-- `worktree-status.txt`: raw `git status --short` snapshot from session creation
-- `worktree-files.json`: staged, unstaged, and untracked file lists from session creation
-- `session.json`: metadata for resolving the session and checking drift
+- `session.json`: structured scope, target refs, fingerprint, and current snapshot.
+- `index.md`: short human-readable resume summary.
+- `findings-open.md`: active findings.
+- `findings-closed.md`: resolved, disproven, or accepted findings.
+- `checked-paths.md`: completed areas and their snapshot fingerprints.
+- `next-steps.md`: ordered unfinished targets.
+- `worktree-status.txt`: current Git status snapshot.
+- `worktree-files.json`: current changed-file and fingerprint details.
+- `snapshot-history/`: snapshots preserved by `refresh-snapshot`.
 
-## Minimal Reading Order
+Schema version 2 sessions have a structured review target.
+Sessions without `schema_version` are legacy sessions.
+Legacy sessions remain readable.
+Their drift result is `legacy-unknown`.
 
-1. Run `python3 <this-skill-dir>/scripts/review_session.py resolve <session>`.
-2. Run `python3 <this-skill-dir>/scripts/review_session.py summary <session>`.
-3. Run `python3 <this-skill-dir>/scripts/review_session.py next <session>`.
-4. Run `python3 <this-skill-dir>/scripts/review_session.py show <session> checked-paths` only when you need to avoid re-reviewing the same area.
-5. Run `python3 <this-skill-dir>/scripts/review_session.py show <session> findings-open` when continuing an existing issue.
-6. Run `python3 <this-skill-dir>/scripts/review_session.py status <session>` if the worktree may have changed since the cache was created.
-
-Do not load every cache file by default.
-
-## Security Review Note
-
-For security review, keep using this cache.
-Use the same file names as normal review.
-Keep `index.md` as the short pointer to the current scope, focus, and next file.
-The chosen scope still applies.
-`staged` review still reads staged changes only.
-`branch` review still reads the branch diff only.
-`whole project` review still reads the requested project area.
+Do not edit session files directly.
+Use the helper so updates remain atomic and counts stay synchronized.

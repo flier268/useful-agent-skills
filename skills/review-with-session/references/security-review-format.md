@@ -1,90 +1,30 @@
-# Security Review Document Format
+# Security Audit
 
-Use this format when creating or restructuring security review docs so a later reviewer can resume with minimal context.
+Use `audit:project` with `--security`.
+Keep the requested project paths as the security boundary.
+Use the normal session files and P0 through P3 priorities.
 
-## Preferred Layout
+Check reachable trust boundaries.
+Check input validation, authentication, authorization, secret handling, file access, network exposure, unsafe deserialization, injection, and repeated vulnerable patterns.
+Confirm the exploit or failure path from code before recording a finding.
+Do not report a checklist item without a concrete defect.
 
-```text
-<session>/
-  index.md
-  findings-open.md
-  findings-closed.md
-  checked-paths.md
-  next-steps.md
-```
-
-## File Use
-
-- `index.md`: review scope, current focus, next file, last meaningful change, current counts, short summary.
-- `findings-open.md`: active security findings. Keep one section per finding.
-- `findings-closed.md`: fixed, disproven, or accepted findings.
-- `checked-paths.md`: checked paths, safe controls, repeated-pattern scans, and short verification notes.
-- `next-steps.md`: unfinished security areas and next checks.
-
-## Scope Binding
-
-Security review keeps the chosen base scope.
-
-- On uncommitted review, inspect staged, unstaged, and untracked changes.
-- On staged review, inspect staged changes only.
-- On branch review, inspect the branch diff only.
-- On whole project review, inspect the requested project area in the current repository.
-
-Record that base scope in `index.md`.
-Keep the next file and current focus in that same file.
-
-## Finding Format
+Use the normal finding title:
 
 ```md
-## <Finding title>
+## F-001 [P1] Reject traversal outside the export root — src/export.py:42
 
-- Status: `unsafe-followup` or `partial-reviewed`
-- Severity: <critical/high/medium/low>
-- Area: <surface>
-- Source: <review pass / diff / file>
+<Trigger, unsafe behavior, impact, and evidence.>
 
-### Why this matters
+### Trust boundary
 
-<impact and exploit path>
+<The boundary crossed by untrusted data.>
 
-### Evidence
+### Remediation
 
-- <file reference>
-- <file reference>
-
-### Remediation direction
-
-- <required fix direction>
-
-### Related checks
-
-- <similar path reviewed or still pending>
+<The required fix direction.>
 ```
 
-Move closed items to `findings-closed.md`.
-
-## Checked Path Format
-
-```md
-- Path or control: <file / symbol / boundary>
-- Status: `safe-reviewed` or `partial-reviewed`
-- Scope: <uncommitted / staged / branch / whole project>
-- <checked item>
-- Evidence: <short file/test references>
-- Residual risk: <optional short note>
-```
-
-Put repeated-pattern checks and command results here when they are short.
-Put the next unfinished security checks in `next-steps.md`.
-
-## Minimal Reading Order
-
-Use this order when resuming:
-
-1. Run `resolve`.
-2. Read the short state through `summary`.
-3. Read the next target through `next`.
-4. Read the diff or source files for the chosen scope.
-5. Read `checked-paths.md` through `show` only if the issue may recur elsewhere.
-
-Do not open every detail file just because it exists.
+Keep repeated-pattern checks in `checked-paths.md`.
+Keep unfinished boundaries in `next-steps.md`.
+Report security findings before non-security audit notes.
