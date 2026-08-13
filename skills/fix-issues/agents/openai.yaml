@@ -1,4 +1,0 @@
-interface:
-  display_name: "Fix Issues"
-  short_description: "Trace causes, restore invariants, and verify repairs"
-  default_prompt: "Use $fix-issues to trace this failure to its actionable root cause, restore the owning invariant, cover related paths, and verify the repair."

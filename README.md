@@ -1,6 +1,6 @@
 # useful-agents-skills
 
-一個整理代理工作流程提示詞的輕量倉庫，用來集中管理可重用的 skills，現在同時支援 Codex 與 Claude。
+一個整理代理工作流程提示詞的輕量倉庫，用來集中管理可重用的 skills。安裝到共用的 `~/.agents/skills`，供支援 skills 的代理讀取。
 
 ## 安裝教學
 
@@ -16,58 +16,37 @@ git clone https://github.com/flier268/useful-agent-skills
 cd useful-agents-skills
 ```
 
-### 3) 安裝到 Codex（可選）
+### 3) 安裝到 `.agents`
 
 Linux / macOS:
 
 ```bash
-mkdir -p ~/.codex/skills
-cp -R skills/* ~/.codex/skills/
+mkdir -p ~/.agents/skills
+cp -R skills/* ~/.agents/skills/
 ```
 
 Windows PowerShell:
 
 ```powershell
-New-Item -ItemType Directory -Force "$HOME\.codex\skills" | Out-Null
-Copy-Item -Recurse -Force .\skills\* "$HOME\.codex\skills\"
+New-Item -ItemType Directory -Force "$HOME\.agents\skills" | Out-Null
+Copy-Item -Recurse -Force .\skills\* "$HOME\.agents\skills\"
 ```
 
-### 4) 安裝到 Claude（可選）
+### 4) 確認安裝結果
 
 Linux / macOS:
 
 ```bash
-mkdir -p ~/.claude/skills
-cp -R skills/* ~/.claude/skills/
+ls -la ~/.agents/skills
 ```
 
 Windows PowerShell:
 
 ```powershell
-New-Item -ItemType Directory -Force "$HOME\.claude\skills" | Out-Null
-Copy-Item -Recurse -Force .\skills\* "$HOME\.claude\skills\"
+Get-ChildItem "$HOME\.agents\skills"
 ```
 
-### 5) 確認安裝結果
-
-Linux / macOS:
-
-```bash
-ls -la ~/.codex/skills
-ls -la ~/.claude/skills
-```
-
-Windows PowerShell:
-
-```powershell
-Get-ChildItem "$HOME\.codex\skills"
-Get-ChildItem "$HOME\.claude\skills"
-```
-
-你應該會看到：
-
-- Codex: `commit-staged`、`fix-issues`、`review-with-session` 等 skill 目錄
-- Claude: `commit-staged`、`fix-issues`、`review-with-session` 等 skill 目錄
+你應該會看到 `commit-staged`、`fix-issues`、`review-with-session` 等 skill 目錄。
 
 ### 更新已安裝技能
 
@@ -76,15 +55,13 @@ Get-ChildItem "$HOME\.claude\skills"
 Linux / macOS:
 
 ```bash
-cp -R skills/* ~/.codex/skills/
-cp -R skills/* ~/.claude/skills/
+cp -R skills/* ~/.agents/skills/
 ```
 
 Windows PowerShell:
 
 ```powershell
-Copy-Item -Recurse -Force .\skills\* "$HOME\.codex\skills\"
-Copy-Item -Recurse -Force .\skills\* "$HOME\.claude\skills\"
+Copy-Item -Recurse -Force .\skills\* "$HOME\.agents\skills\"
 ```
 
 ## 目前包含的 Skills
@@ -96,18 +73,11 @@ Copy-Item -Recurse -Force .\skills\* "$HOME\.claude\skills\"
 - `review-with-session`
   - 用持久 session 審查變更、專案範圍與安全問題。
 
-## 平台對應
-
-- Codex 使用 `skills/<name>/SKILL.md` 與 `skills/<name>/agents/openai.yaml`
-- Claude 使用 `skills/<name>/SKILL.md`
-- 兩者共用同一份 skill 內容，只是安裝位置不同
-- Linux / macOS 預設路徑通常是 `~/.codex/skills` 與 `~/.claude/skills`
-- Windows 預設路徑通常是 `$HOME\.codex\skills` 與 `$HOME\.claude\skills`
-
 ## 使用方式
 
-- Codex: 以 `$commit-staged`、`$fix-issues`、`$review-with-session` 之類的 skill 名稱呼叫
-- Claude: 讓 Claude 依照 skill 描述自動套用，或在對話中明確要求使用對應 skill
+代理可依照 skill 描述自動套用。
+
+你也可以在對話中明確指定 `$commit-staged`、`$fix-issues` 或 `$review-with-session`。
 
 ## 授權
 

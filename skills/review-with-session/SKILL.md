@@ -1,6 +1,6 @@
 ---
 name: review-with-session
-description: Perform read-only, defect-first code review with a durable resumable session. Use for uncommitted, staged, branch, commit, whole-project, or security review when Codex must cover the complete scope, record every actionable finding, and resume without repeating checked work.
+description: Perform read-only, defect-first code review with a durable resumable session. Use for uncommitted, staged, branch, commit, whole-project, or security review when the agent must cover the complete scope, record every actionable finding, and resume without repeating checked work.
 ---
 
 # Review With Session

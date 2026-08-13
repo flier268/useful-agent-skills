@@ -1,4 +1,0 @@
-interface:
-  display_name: "Review With Session"
-  short_description: "Run defect-first code reviews with durable resumable state."
-  default_prompt: "Use $review-with-session to perform a read-only, defect-first review of the requested change or project scope. Cover the complete target, verify findings through code paths and tests, record progress in the durable session, and report every actionable finding."
