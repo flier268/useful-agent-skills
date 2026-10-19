@@ -1,83 +1,87 @@
-# useful-agents-skills
+# useful-agent-skills
 
-一個整理代理工作流程提示詞的輕量倉庫，用來集中管理可重用的 skills。安裝到共用的 `~/.agents/skills`，供支援 skills 的代理讀取。
+一個整理代理工作流程提示詞的輕量倉庫，用來集中管理可重用的 skills。
 
-## 安裝教學
+Skills 採用 [Agent Skills](https://agentskills.io/) 格式，可用 [vercel-labs/skills](https://github.com/vercel-labs/skills) CLI 安裝到支援的代理。
 
-### 1) 下載專案
+[![skills.sh](https://skills.sh/b/flier268/useful-agent-skills)](https://skills.sh/flier268/useful-agent-skills)
+
+## 安裝
+
+用 `npx skills` 從這個 repo 安裝：
+
+```bash
+npx skills add flier268/useful-agent-skills
+```
+
+等同寫法：
+
+```bash
+npx skills add https://github.com/flier268/useful-agent-skills
+```
+
+常用選項：
+
+```bash
+# 列出可用 skills，不安裝
+npx skills add flier268/useful-agent-skills --list
+
+# 只安裝指定 skill
+npx skills add flier268/useful-agent-skills --skill commit-staged --skill fix
+
+# 安裝到使用者全域目錄
+npx skills add flier268/useful-agent-skills -g
+
+# 非互動安裝（CI）
+npx skills add flier268/useful-agent-skills --all -y
+```
+
+預設裝到目前專案的代理 skills 目錄。加 `-g` 則裝到使用者層級，例如 `~/.agents/skills`、`~/.claude/skills`、`~/.grok/skills`，依你選擇的代理而定。
+
+更新已安裝技能：
+
+```bash
+npx skills update
+```
+
+或重新執行 `npx skills add flier268/useful-agent-skills`。
+
+### 手動複製（可選）
+
+若不想用 CLI，也可以直接複製 `skills/`：
+
+Linux / macOS:
 
 ```bash
 git clone https://github.com/flier268/useful-agent-skills
-```
-
-### 2) 進入專案目錄
-
-```bash
-cd useful-agents-skills
-```
-
-### 3) 安裝到 `.agents`
-
-Linux / macOS:
-
-```bash
 mkdir -p ~/.agents/skills
-cp -R skills/* ~/.agents/skills/
+cp -R useful-agent-skills/skills/* ~/.agents/skills/
 ```
 
 Windows PowerShell:
 
 ```powershell
+git clone https://github.com/flier268/useful-agent-skills
 New-Item -ItemType Directory -Force "$HOME\.agents\skills" | Out-Null
-Copy-Item -Recurse -Force .\skills\* "$HOME\.agents\skills\"
-```
-
-### 4) 確認安裝結果
-
-Linux / macOS:
-
-```bash
-ls -la ~/.agents/skills
-```
-
-Windows PowerShell:
-
-```powershell
-Get-ChildItem "$HOME\.agents\skills"
-```
-
-你應該會看到 `commit-staged`、`fix-issues`、`review-with-session` 等 skill 目錄。
-
-### 更新已安裝技能
-
-當此 repo 有更新時，在專案目錄重新執行。
-
-Linux / macOS:
-
-```bash
-cp -R skills/* ~/.agents/skills/
-```
-
-Windows PowerShell:
-
-```powershell
-Copy-Item -Recurse -Force .\skills\* "$HOME\.agents\skills\"
+Copy-Item -Recurse -Force .\useful-agent-skills\skills\* "$HOME\.agents\skills\"
 ```
 
 ## 目前包含的 Skills
 
+- `cleanup`
+  - 清理死碼，並把調適、除錯、趕工過程留下的補釘改成正確實作。
 - `commit-staged`
   - 針對「已 staged 變更」產生符合規範的 commit 訊息，並建立 commit。
-- `fix-issues`
-  - 以 root cause 為核心處理 bug/故障，並補上回歸驗證。
+- `fix`
+  - 以根因為核心修正已發現的問題，禁止補釘式修法；必要時重構。
 - `review-with-session`
   - 用持久 session 審查變更、專案範圍與安全問題。
 
 ## 使用方式
 
-代理可依照 skill 描述自動套用。
+安裝後，代理會依 skill 描述自動套用。
 
-你也可以在對話中明確指定 `$commit-staged`、`$fix-issues` 或 `$review-with-session`。
+你也可以在對話中明確指定 `/cleanup`、`/commit-staged`、`/fix` 或 `/review-with-session`。
 
 ## 授權
 
